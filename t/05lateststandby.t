@@ -60,7 +60,8 @@ SCOPE: {
         my $sleep_after_secs= shift || 0.5;
         my $sleep_lock_secs= shift || 0;
         my $id= ++$max_id;
-        my $pid= fork() // die "Failed to fork!";
+        my $pid= fork();
+        defined $pid or die "Failed to fork!";
         if (!$pid) {
             # child process
             $limit = IPC::ConcurrencyLimit::WithLatestStandby->new(%shared_opt);
